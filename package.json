@@ -1,0 +1,10 @@
+{
+  "name": "akros-carta",
+  "private": true,
+  "type": "module",
+  "description": "Carta digital de AKROS Café (se abre con el QR o NFC de cada mesa)",
+  "scripts": {
+    "test": "node --test",
+    "dev": "npx --yes serve@14.2.4 -l 4000 ."
+  }
+}

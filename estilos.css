@@ -1,0 +1,173 @@
+/* Paleta de AKROS Café (la misma del POS, src/app/globals.css). */
+:root {
+  --crema: #fbf6ec;
+  --crema-2: #f4e8cf;
+  --dorado: #d4a656;
+  --cafe: #6b4f22;
+  --azul: #02399e;
+  --tinta: #18222a;
+  --tinta-suave: #4f5b63;
+  --blanco: #ffffff;
+  --borde: #e9d1a0;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 8.5rem; }
+
+body {
+  margin: 0;
+  background: var(--crema);
+  color: var(--tinta);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.4;
+  -webkit-text-size-adjust: 100%;
+}
+
+.oculto {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+.encabezado {
+  background: var(--blanco);
+  padding: 1rem 1rem 0.75rem;
+  text-align: center;
+  border-bottom: 1px solid var(--borde);
+}
+
+.logo { width: min(260px, 70vw); height: auto; display: block; margin: 0 auto; }
+
+.mesa {
+  display: inline-block;
+  margin: 0.5rem 0 0;
+  padding: 0.2rem 0.8rem;
+  border-radius: 999px;
+  background: var(--azul);
+  color: var(--blanco);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Buscador y categorías quedan fijos arriba al bajar. */
+.barra {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--crema);
+  border-bottom: 1px solid var(--borde);
+  padding: 0.75rem 1rem 0.5rem;
+}
+
+.buscador input {
+  width: 100%;
+  font: inherit;
+  font-size: 1rem; /* 16px: iOS no hace zoom al tocar */
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--borde);
+  border-radius: 0.75rem;
+  background: var(--blanco);
+  color: var(--tinta);
+}
+
+.buscador input:focus-visible { outline: 2px solid var(--azul); outline-offset: 1px; }
+
+.chips {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 0.6rem 0 0.25rem;
+  scrollbar-width: none;
+}
+
+.chips::-webkit-scrollbar { display: none; }
+
+.chip {
+  flex: none;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--borde);
+  background: var(--blanco);
+  color: var(--cafe);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.chip.activo { background: var(--cafe); border-color: var(--cafe); color: var(--blanco); }
+
+.chip:focus-visible { outline: 2px solid var(--azul); outline-offset: 2px; }
+
+main { max-width: 760px; margin: 0 auto; padding: 0 1rem; }
+
+.categoria { padding-top: 1.25rem; }
+
+.categoria-titulo {
+  margin: 0 0 0.75rem;
+  font-size: 1.35rem;
+  color: var(--azul);
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.productos { display: grid; gap: 0.75rem; }
+
+@media (min-width: 640px) {
+  .productos { grid-template-columns: 1fr 1fr; }
+}
+
+.producto {
+  display: flex;
+  gap: 0.85rem;
+  padding: 0.65rem;
+  background: var(--blanco);
+  border: 1px solid var(--crema-2);
+  border-radius: 1rem;
+  box-shadow: 0 1px 2px rgb(107 79 34 / 0.08);
+}
+
+.producto-foto {
+  flex: none;
+  width: 92px;
+  height: 92px;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: var(--crema-2) url("icono.png") center / 60% no-repeat;
+}
+
+.producto-foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.producto-cuerpo { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+
+.producto-nombre { margin: 0; font-size: 1rem; font-weight: 700; }
+
+.producto-descripcion { margin: 0.2rem 0 0; color: var(--tinta-suave); font-size: 0.875rem; }
+
+.producto-precio { margin: auto 0 0; padding-top: 0.35rem; color: var(--cafe); font-weight: 800; font-size: 1.05rem; }
+
+.estado { text-align: center; padding: 2.5rem 0; }
+
+.aviso { color: var(--tinta-suave); text-align: center; padding: 1rem 0; margin: 0; }
+
+.boton {
+  font: inherit;
+  font-weight: 600;
+  padding: 0.6rem 1.4rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--azul);
+  color: var(--blanco);
+  cursor: pointer;
+}
+
+.pie {
+  text-align: center;
+  color: var(--tinta-suave);
+  font-size: 0.8rem;
+  padding: 2rem 1rem calc(2rem + env(safe-area-inset-bottom));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
