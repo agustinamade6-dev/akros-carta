@@ -25,6 +25,9 @@ body {
   -webkit-text-size-adjust: 100%;
 }
 
+/* `hidden` tiene que ganarle a los `display` de las clases (la etiqueta de mesa vacía se veía como una pastilla). */
+[hidden] { display: none !important; }
+
 .oculto {
   position: absolute; width: 1px; height: 1px; overflow: hidden;
   clip: rect(0 0 0 0); white-space: nowrap;
