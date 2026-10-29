@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#fbf6ec">
+  <meta name="theme-color" content="#ffffff">
   <meta name="description" content="Carta de AKROS Café">
   <title>Carta · AKROS Café</title>
   <link rel="icon" href="icono.png">
@@ -13,7 +13,6 @@
 <body>
   <header class="encabezado">
     <img class="logo" src="logo.png" alt="AKROS Café" width="864" height="274">
-    <p id="mesa" class="mesa" hidden></p>
   </header>
 
   <div class="barra">
@@ -21,14 +20,14 @@
       <label class="oculto" for="buscar">Buscar en la carta</label>
       <input id="buscar" type="search" placeholder="Buscar en la carta…" autocomplete="off">
     </div>
-    <nav id="categorias" class="chips" aria-label="Categorías"></nav>
+    <nav id="secciones" class="pestanias" role="tablist" aria-label="Secciones de la carta"></nav>
   </div>
 
   <main>
     <div id="estado" class="estado" role="status">
       <p class="aviso">Cargando la carta…</p>
     </div>
-    <div id="carta"></div>
+    <div id="carta" aria-live="polite"></div>
   </main>
 
   <footer class="pie">
