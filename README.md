@@ -16,7 +16,8 @@ Si el que se queda sin señal es el cliente, ve la última carta que abrió en s
 
 ## Cómo se ve
 
-- Arriba, el buscador y las **secciones** como pestañas (Desayuno y Merienda, Cafetería, Confitería, Almuerzo, Cena).
+- Arriba, el buscador y las **secciones** como pestañas: Desayunos y Meriendas, Cafetería (con Cositas, Bebidas frías y
+  Sandwichitos), Almuerzo y Cena (estas dos, "Próximamente"). La confitería no va en la carta: se vende en el mostrador.
 - Se abre en la sección **del momento** según la hora de Argentina (marcada "Ahora"); fuera de todo horario, en la primera.
 - Cada producto es un renglón de carta: `Cortado ........ $2.500`, la descripción debajo y, si tiene, una foto chica.
 - El buscador busca en todas las secciones, sin importar acentos ni mayúsculas.
@@ -61,7 +62,11 @@ Lo genera el POS: es el contrato entre el POS y esta página. Cambiarlo se avisa
 - `secciones` y sus `categorias` ya vienen **ordenadas** (por `orden` del POS) y solo con productos **disponibles**.
 - `horarios`: en hora de Argentina, `"HH:MM"`; `"24:00"` es la medianoche y un horario puede cruzarla
   (`20:00` a `02:00`). Vacío = se sirve todo el día (nunca es "la del momento", pero se puede elegir).
-- `precio` en **pesos** (como habla la API del POS), no en centavos.
+- `disponible: false` en una sección (opcional, por defecto `true`): aparece como pestaña "Pronto" y muestra
+  "Próximamente", aunque no tenga productos. Nunca es la sección del momento ni aparece en la búsqueda. Hoy: Almuerzo y
+  Cena.
+- `precio` en **pesos** (como habla la API del POS), no en centavos. `null` = todavía sin precio: el producto se muestra
+  sin precio (la carta real se cargó antes que los precios).
 - `imagen`: URL `https://` o vacía. Otra cosa se ignora y el renglón queda sin foto.
 - La página descarta productos sin nombre o sin precio, categorías y secciones vacías y horarios mal escritos, sin
   romperse.

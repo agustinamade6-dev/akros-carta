@@ -52,7 +52,10 @@ test('normalizarCarta (v2): descarta productos inválidos, categorías y seccion
   assert.equal(carta.secciones.length, 1);
   assert.deepEqual(carta.secciones[0].horarios, [{ desde: 420, hasta: 750 }]);
   assert.deepEqual(carta.secciones[0].categorias, [
-    { id: '1', nombre: 'Cafés', productos: [{ id: '1', nombre: 'Cortado', descripcion: 'Chico', precio: 1800, imagen: '' }] },
+    { id: '1', nombre: 'Cafés', productos: [
+      { id: '1', nombre: 'Cortado', descripcion: 'Chico', precio: 1800, imagen: '' },
+      { id: '3', nombre: 'Sin precio', descripcion: '', precio: null, imagen: '' },
+    ] },
   ]);
   assert.equal(formatFecha(carta.publicadaEn).replace(NBSP, ' '), '25/10/2026, 15:30');
 });
@@ -76,15 +79,45 @@ test('minutosEnArgentina: la hora de Argentina aunque el celular esté en otra z
   assert.equal(minutosEnArgentina(aLas('23:59')), 23 * 60 + 59);
 });
 
+const UN_PRODUCTO = [{ nombre: 'x', productos: [{ nombre: 'x', precio: 1 }] }];
+
 test('seccionDelMomento: según el horario de cada sección', () => {
-  const { secciones } = normalizarCarta(ejemplo());
-  assert.equal(seccionDelMomento(secciones, aLas('08:30')).nombre, 'Desayuno y Merienda');
+  const { secciones } = normalizarCarta({ secciones: [
+    { id: 'd', nombre: 'Desayunos y Meriendas', horarios: [{ desde: '07:00', hasta: '12:00' }, { desde: '16:00', hasta: '20:00' }], categorias: UN_PRODUCTO },
+    { id: 'c', nombre: 'Cafetería', horarios: [], categorias: UN_PRODUCTO },
+    { id: 'a', nombre: 'Almuerzo', horarios: [{ desde: '12:00', hasta: '16:00' }], categorias: UN_PRODUCTO },
+    { id: 'n', nombre: 'Cena', horarios: [{ desde: '20:00', hasta: '24:00' }], categorias: UN_PRODUCTO },
+  ] });
+  assert.equal(seccionDelMomento(secciones, aLas('08:30')).nombre, 'Desayunos y Meriendas');
   assert.equal(seccionDelMomento(secciones, aLas('12:00')).nombre, 'Almuerzo');
-  assert.equal(seccionDelMomento(secciones, aLas('17:45')).nombre, 'Desayuno y Merienda');
+  assert.equal(seccionDelMomento(secciones, aLas('17:45')).nombre, 'Desayunos y Meriendas');
   assert.equal(seccionDelMomento(secciones, aLas('21:10')).nombre, 'Cena');
   // Fuera de todo horario: la primera sección.
-  assert.equal(seccionDelMomento(secciones, aLas('03:00')).nombre, 'Desayuno y Merienda');
+  assert.equal(seccionDelMomento(secciones, aLas('03:00')).nombre, 'Desayunos y Meriendas');
   assert.equal(seccionDelMomento([], aLas('03:00')), null);
+});
+
+test('una sección "no disponible" se muestra como Próximamente y nunca es la del momento', () => {
+  const { secciones } = normalizarCarta({ secciones: [
+    { id: 'a', nombre: 'Almuerzo', disponible: false, horarios: [{ desde: '12:00', hasta: '16:00' }], categorias: [] },
+    { id: 'c', nombre: 'Cafetería', categorias: UN_PRODUCTO },
+  ] });
+  // Se conserva aunque no tenga productos, para que el cliente vea que existe.
+  assert.deepEqual(secciones.map((s) => [s.nombre, s.disponible]), [['Almuerzo', false], ['Cafetería', true]]);
+  assert.equal(seccionDelMomento(secciones, aLas('13:00')).nombre, 'Cafetería');
+  // No aparece en la búsqueda.
+  assert.deepEqual(filtrarCarta({ secciones }, 'x').map((s) => s.nombre), ['Cafetería']);
+});
+
+test('productos sin precio (todavía no cargado) se muestran sin precio; un precio inválido los descarta', () => {
+  const { secciones } = normalizarCarta({ secciones: [{ nombre: 'Cafetería', categorias: [{ nombre: 'Cafés', productos: [
+    { nombre: 'Cortado', precio: null },
+    { nombre: 'Lágrima' },
+    { nombre: 'Mocca', precio: 3200 },
+    { nombre: 'Negativo', precio: -1 },
+    { nombre: 'Texto', precio: '3200' },
+  ] }] }] });
+  assert.deepEqual(secciones[0].categorias[0].productos.map((p) => [p.nombre, p.precio]), [['Cortado', null], ['Lágrima', null], ['Mocca', 3200]]);
 });
 
 test('seccionDelMomento: un horario que cruza la medianoche', () => {
@@ -108,18 +141,24 @@ test('filtrarCarta: busca en todas las secciones, sin importar acentos ni mayús
   const carta = normalizarCarta(ejemplo());
   const nombres = (secciones) => secciones.flatMap((s) => s.categorias.flatMap((c) => c.productos.map((p) => p.nombre)));
   assert.deepEqual(nombres(filtrarCarta(carta, 'lagrima')), ['Lágrima']);
-  assert.deepEqual(nombres(filtrarCarta(carta, 'MEDIALUNA')).sort(), ['Desayuno AKROS', 'Medialuna']);
-  assert.deepEqual(filtrarCarta(carta, 'flan').map((s) => s.nombre), ['Cena']);
+  // También busca en lo que incluye cada combo.
+  assert.deepEqual(nombres(filtrarCarta(carta, 'MEDIALUNA')).sort(), ['Clásico', 'Medialuna', 'Medialuna con jamón y queso']);
+  assert.deepEqual(filtrarCarta(carta, 'palta').map((s) => s.nombre), ['Desayunos y Meriendas']);
   assert.equal(filtrarCarta(carta, '  ').length, carta.secciones.length);
   assert.equal(filtrarCarta(carta, 'zzz').length, 0);
 });
 
-test('carta-ejemplo.json tiene el formato que publica el POS (v2) y nada se descarta', () => {
+test('carta-ejemplo.json: la carta real de AKROS (v2), sin Confitería y con Almuerzo y Cena "Próximamente"', () => {
   const datos = ejemplo();
   assert.equal(datos.version, 2);
   const carta = normalizarCarta(datos);
   const contar = (secciones) => secciones.reduce((n, s) => n + s.categorias.reduce((m, c) => m + c.productos.length, 0), 0);
-  assert.equal(carta.secciones.length, datos.secciones.length);
   assert.equal(contar(carta.secciones), contar(datos.secciones));
-  assert.deepEqual(carta.secciones.map((s) => s.nombre), ['Desayuno y Merienda', 'Cafetería', 'Confitería', 'Almuerzo', 'Cena']);
+  assert.equal(contar(carta.secciones), 33);
+  assert.deepEqual(carta.secciones.map((s) => [s.nombre, s.disponible]), [
+    ['Desayunos y Meriendas', true], ['Cafetería', true], ['Almuerzo', false], ['Cena', false],
+  ]);
+  assert.deepEqual(carta.secciones[1].categorias.map((c) => c.nombre), ['Cafetería', 'Cositas', 'Bebidas frías', 'Sandwichitos']);
+  // La confitería se vende en el mostrador (con stock y código de barras): no va en la carta.
+  assert.equal(carta.secciones.some((s) => /confiter/i.test(s.nombre)), false);
 });

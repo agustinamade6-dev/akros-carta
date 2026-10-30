@@ -51,12 +51,13 @@ function normalizarCategorias(categorias) {
       id: String(categoria?.id ?? i),
       nombre: texto(categoria?.nombre),
       productos: (Array.isArray(categoria?.productos) ? categoria.productos : [])
-        .filter((p) => texto(p?.nombre) && Number.isFinite(p?.precio) && p.precio >= 0)
+        // Sin precio (null o ausente) se muestra igual, sin precio; un precio inválido descarta el producto.
+        .filter((p) => texto(p?.nombre) && (p?.precio == null || (Number.isFinite(p.precio) && p.precio >= 0)))
         .map((p) => ({
           id: String(p.id ?? p.nombre),
           nombre: texto(p.nombre),
           descripcion: texto(p.descripcion),
-          precio: p.precio,
+          precio: p.precio ?? null,
           imagen: imagenSegura(p.imagen),
         })),
     }))
@@ -77,10 +78,12 @@ export function normalizarCarta(datos) {
     .map((seccion, i) => ({
       id: String(seccion?.id ?? i),
       nombre: texto(seccion?.nombre),
+      // `disponible: false`: la sección aparece como "Próximamente" (Almuerzo y Cena todavía no se sirven).
+      disponible: seccion?.disponible !== false,
       horarios: normalizarHorarios(seccion?.horarios),
       categorias: normalizarCategorias(seccion?.categorias),
     }))
-    .filter((seccion) => seccion.nombre && seccion.categorias.length > 0);
+    .filter((seccion) => seccion.nombre && (!seccion.disponible || seccion.categorias.length > 0));
   const fecha = new Date(datos.publicadaEn);
   return {
     negocio: texto(datos.negocio) || 'AKROS Café',
@@ -102,11 +105,15 @@ function enHorario({ desde, hasta }, minuto) {
   return desde < hasta ? minuto >= desde && minuto < hasta : minuto >= desde || minuto < hasta;
 }
 
-/** Sección que corresponde a esta hora (la primera cuyo horario la cubre); si ninguna, la primera de la carta. */
+/**
+ * Sección que corresponde a esta hora (la primera disponible cuyo horario la cubre); si ninguna, la primera
+ * disponible de la carta. Una sección "Próximamente" nunca es la del momento.
+ */
 export function seccionDelMomento(secciones, fecha) {
   const minuto = minutosEnArgentina(fecha);
-  const delMomento = secciones.find((s) => s.horarios.some((h) => enHorario(h, minuto)));
-  return delMomento ?? secciones[0] ?? null;
+  const disponibles = secciones.filter((s) => s.disponible);
+  const delMomento = disponibles.find((s) => s.horarios.some((h) => enHorario(h, minuto)));
+  return delMomento ?? disponibles[0] ?? secciones[0] ?? null;
 }
 
 const hora = (minutos) => {
@@ -176,7 +183,8 @@ function renglonProducto(producto) {
   }
   const cuerpo = crear('div', 'item-cuerpo');
   const linea = crear('div', 'item-linea');
-  linea.append(crear('h4', 'item-nombre', producto.nombre), crear('span', 'item-puntos'), crear('p', 'item-precio', formatPesos(producto.precio)));
+  linea.append(crear('h4', 'item-nombre', producto.nombre));
+  if (producto.precio !== null) linea.append(crear('span', 'item-puntos'), crear('p', 'item-precio', formatPesos(producto.precio)));
   cuerpo.append(linea);
   if (producto.descripcion) cuerpo.append(crear('p', 'item-descripcion', producto.descripcion));
   renglon.append(cuerpo);
@@ -192,6 +200,10 @@ function bloqueSeccion(seccion, { conTitulo }) {
     const horario = textoHorario(seccion.horarios);
     if (horario) cabecera.append(crear('p', 'seccion-horario', horario));
     bloque.append(cabecera);
+  }
+  if (!seccion.disponible) {
+    bloque.append(crear('p', 'proximamente', 'Próximamente. Por ahora esta sección no está disponible.'));
+    return bloque;
   }
   for (const categoria of seccion.categorias) {
     const grupo = crear('div', 'categoria');
@@ -268,7 +280,7 @@ async function iniciar() {
 
   estado.hidden = true;
   document.title = `Carta · ${carta.negocio}`;
-  if (carta.publicadaEn && !pie.textContent) pie.textContent = `Precios actualizados el ${formatFecha(carta.publicadaEn)}`;
+  if (carta.publicadaEn && !pie.textContent) pie.textContent = `Carta actualizada el ${formatFecha(carta.publicadaEn)}`;
 
   const delMomento = seccionDelMomento(carta.secciones, new Date());
   let elegida = delMomento.id;
@@ -298,6 +310,10 @@ async function iniciar() {
     boton.dataset.id = seccion.id;
     boton.append(crear('span', '', seccion.nombre));
     if (seccion.id === delMomento.id && seccion.horarios.length > 0) boton.append(crear('span', 'ahora', 'Ahora'));
+    if (!seccion.disponible) {
+      boton.classList.add('no-disponible');
+      boton.append(crear('span', 'pronto', 'Pronto'));
+    }
     boton.addEventListener('click', () => {
       elegida = seccion.id;
       dibujar();

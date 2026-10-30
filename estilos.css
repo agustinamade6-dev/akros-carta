@@ -102,6 +102,29 @@ body {
   padding: 0.1rem 0.45rem;
 }
 
+/* Secciones que todavía no se sirven (Almuerzo, Cena): se pueden abrir, pero avisan "Próximamente". */
+.pestania.no-disponible { color: var(--tinta-suave); }
+
+.pronto {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--tinta-suave);
+  background: var(--fondo-2);
+  border-radius: 999px;
+  padding: 0.1rem 0.45rem;
+}
+
+.proximamente {
+  margin: 1.5rem 0 0;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  color: var(--tinta-suave);
+  background: var(--fondo-2);
+  border-radius: 0.75rem;
+}
+
 main { max-width: 680px; margin: 0 auto; padding: 0 1.1rem; }
 
 .seccion { padding-top: 1.4rem; }

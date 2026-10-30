@@ -4,26 +4,21 @@
   "publicadaEn": "2026-10-29T15:00:00.000Z",
   "secciones": [
     {
-      "id": "desayuno-merienda",
-      "nombre": "Desayuno y Merienda",
-      "horarios": [{ "desde": "07:00", "hasta": "12:00" }, { "desde": "16:00", "hasta": "20:00" }],
+      "id": "desayunos-meriendas",
+      "nombre": "Desayunos y Meriendas",
+      "horarios": [],
       "categorias": [
         {
           "id": "combos",
           "nombre": "Combos",
           "productos": [
-            { "id": 101, "nombre": "Desayuno AKROS", "descripcion": "Café con leche, 2 medialunas y jugo de naranja exprimido", "precio": 6500, "imagen": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=200&h=200" },
-            { "id": 102, "nombre": "Desayuno criollo", "descripcion": "Infusión, tostadas de pan casero, manteca y dulce de leche", "precio": 5200, "imagen": "" },
-            { "id": 103, "nombre": "Desayuno saludable", "descripcion": "Infusión, yogur con granola y frutas de estación", "precio": 6900, "imagen": "" }
-          ]
-        },
-        {
-          "id": "para-acompaniar",
-          "nombre": "Para acompañar",
-          "productos": [
-            { "id": 111, "nombre": "Medialuna", "descripcion": "De manteca o de grasa", "precio": 900, "imagen": "" },
-            { "id": 112, "nombre": "Tostado de jamón y queso", "descripcion": "En pan de miga", "precio": 5500, "imagen": "" },
-            { "id": 113, "nombre": "Tostadas con palta", "descripcion": "Pan de masa madre, palta y huevo poché", "precio": 6200, "imagen": "" }
+            { "id": 101, "nombre": "Clásico", "descripcion": "Infusión + tortillas o medialunas", "precio": null, "imagen": "" },
+            { "id": 102, "nombre": "De campo", "descripcion": "Infusión con tostadas de pan de campo + dulce de leche + manteca + vaso de jugo", "precio": null, "imagen": "" },
+            { "id": 103, "nombre": "Light", "descripcion": "Infusión + tostadas con o sin semillas + mermelada + queso crema + ensalada de frutas + vaso de jugo", "precio": null, "imagen": "" },
+            { "id": 104, "nombre": "Saludable", "descripcion": "Infusión + panqueques de avena + frutas de estación con un toque de miel y coco rallado", "precio": null, "imagen": "" },
+            { "id": 105, "nombre": "Avocado toast", "descripcion": "Infusión + tostada de masa madre + palta + huevos revueltos + panceta + tomates cherry + mix de semillas", "precio": null, "imagen": "" },
+            { "id": 106, "nombre": "Proteico", "descripcion": "Infusión + huevos revueltos + jamón cocido + queso + palta + tomates cherry + panceta", "precio": null, "imagen": "" },
+            { "id": 107, "nombre": "Miti y miti para 2", "descripcion": "Infusión + sanguchitos de pan árabe con jamón y queso + huevos revueltos + palta + tostadas + croissant con Nutella + bowl con frutas", "precio": null, "imagen": "" }
           ]
         }
       ]
@@ -34,48 +29,53 @@
       "horarios": [],
       "categorias": [
         {
-          "id": "cafes",
-          "nombre": "Cafés",
+          "id": "cafeteria",
+          "nombre": "Cafetería",
           "productos": [
-            { "id": 201, "nombre": "Espresso", "descripcion": "", "precio": 2000, "imagen": "" },
-            { "id": 202, "nombre": "Cortado", "descripcion": "Espresso con un toque de leche", "precio": 2500, "imagen": "" },
-            { "id": 203, "nombre": "Café con leche", "descripcion": "En taza grande", "precio": 2800, "imagen": "" },
-            { "id": 204, "nombre": "Capuchino", "descripcion": "Con espuma de leche y cacao", "precio": 3200, "imagen": "https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&q=80&w=200&h=200" },
-            { "id": 205, "nombre": "Lágrima", "descripcion": "Leche caliente con unas gotas de café", "precio": 2600, "imagen": "" }
+            { "id": 201, "nombre": "Café con leche", "descripcion": "", "precio": null, "imagen": "" },
+            { "id": 202, "nombre": "Cortado", "descripcion": "", "precio": null, "imagen": "" },
+            { "id": 203, "nombre": "Lágrima", "descripcion": "", "precio": null, "imagen": "" },
+            { "id": 204, "nombre": "Submarino", "descripcion": "", "precio": null, "imagen": "" },
+            { "id": 205, "nombre": "Mocca", "descripcion": "", "precio": null, "imagen": "" },
+            { "id": 206, "nombre": "Capuccino", "descripcion": "", "precio": null, "imagen": "" },
+            { "id": 207, "nombre": "Té", "descripcion": "", "precio": null, "imagen": "" }
           ]
         },
         {
-          "id": "otras-bebidas",
-          "nombre": "Otras bebidas",
+          "id": "cositas",
+          "nombre": "Cositas",
           "productos": [
-            { "id": 211, "nombre": "Té en hebras", "descripcion": "Negro, verde o de frutos rojos", "precio": 2200, "imagen": "" },
-            { "id": 212, "nombre": "Submarino", "descripcion": "Leche caliente con barra de chocolate", "precio": 3300, "imagen": "" },
-            { "id": 213, "nombre": "Jugo de naranja exprimido", "descripcion": "", "precio": 3000, "imagen": "" }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "confiteria",
-      "nombre": "Confitería",
-      "horarios": [],
-      "categorias": [
-        {
-          "id": "tortas",
-          "nombre": "Tortas y tartas",
-          "productos": [
-            { "id": 301, "nombre": "Chocotorta", "descripcion": "La porción", "precio": 4200, "imagen": "" },
-            { "id": 302, "nombre": "Lemon pie", "descripcion": "La porción", "precio": 4000, "imagen": "" },
-            { "id": 303, "nombre": "Cheesecake de frutos rojos", "descripcion": "La porción", "precio": 4500, "imagen": "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&q=80&w=200&h=200" }
+            { "id": 301, "nombre": "Brownie", "descripcion": "", "precio": null, "imagen": "" },
+            { "id": 302, "nombre": "Pastafrola", "descripcion": "", "precio": null, "imagen": "" },
+            { "id": 303, "nombre": "Alfajor de maicena", "descripcion": "", "precio": null, "imagen": "" },
+            { "id": 304, "nombre": "Mini tarta", "descripcion": "", "precio": null, "imagen": "" },
+            { "id": 305, "nombre": "Cookie", "descripcion": "", "precio": null, "imagen": "" },
+            { "id": 306, "nombre": "Medialuna", "descripcion": "", "precio": null, "imagen": "" },
+            { "id": 307, "nombre": "Medialuna con jamón y queso", "descripcion": "", "precio": null, "imagen": "" },
+            { "id": 308, "nombre": "Tortilla", "descripcion": "", "precio": null, "imagen": "" },
+            { "id": 309, "nombre": "Croissant", "descripcion": "", "precio": null, "imagen": "" }
           ]
         },
         {
-          "id": "masas",
-          "nombre": "Masas y alfajores",
+          "id": "bebidas-frias",
+          "nombre": "Bebidas frías",
           "productos": [
-            { "id": 311, "nombre": "Alfajor de maicena", "descripcion": "Casero", "precio": 1500, "imagen": "" },
-            { "id": 312, "nombre": "Budín de limón", "descripcion": "La porción", "precio": 2400, "imagen": "" },
-            { "id": 313, "nombre": "Scones", "descripcion": "Tres unidades, con manteca y mermelada", "precio": 2800, "imagen": "" }
+            { "id": 401, "nombre": "Licuado", "descripcion": "", "precio": null, "imagen": "" },
+            { "id": 402, "nombre": "Jugo de naranja", "descripcion": "", "precio": null, "imagen": "" },
+            { "id": 403, "nombre": "Limonada tranqui", "descripcion": "", "precio": null, "imagen": "" },
+            { "id": 404, "nombre": "Limonada con menta y jengibre", "descripcion": "", "precio": null, "imagen": "" },
+            { "id": 405, "nombre": "Limonada de frutos rojos", "descripcion": "", "precio": null, "imagen": "" },
+            { "id": 406, "nombre": "Gaseosa", "descripcion": "", "precio": null, "imagen": "" },
+            { "id": 407, "nombre": "Agua", "descripcion": "Con o sin gas", "precio": null, "imagen": "" },
+            { "id": 408, "nombre": "Chocolatada", "descripcion": "", "precio": null, "imagen": "" }
+          ]
+        },
+        {
+          "id": "sandwichitos",
+          "nombre": "Sandwichitos",
+          "productos": [
+            { "id": 501, "nombre": "Sandwichito de pan árabe", "descripcion": "Jamón y queso o ternera y queso", "precio": null, "imagen": "" },
+            { "id": 502, "nombre": "Sandwichito de pan de miga", "descripcion": "Jamón y queso o ternera y queso", "precio": null, "imagen": "" }
           ]
         }
       ]
@@ -83,49 +83,16 @@
     {
       "id": "almuerzo",
       "nombre": "Almuerzo",
-      "horarios": [{ "desde": "12:00", "hasta": "16:00" }],
-      "categorias": [
-        {
-          "id": "menu-del-dia",
-          "nombre": "Menú del día",
-          "productos": [
-            { "id": 401, "nombre": "Menú ejecutivo", "descripcion": "Plato del día, bebida y postre o café", "precio": 9500, "imagen": "" }
-          ]
-        },
-        {
-          "id": "platos",
-          "nombre": "Platos",
-          "productos": [
-            { "id": 411, "nombre": "Milanesa con puré", "descripcion": "De ternera o de pollo", "precio": 8200, "imagen": "" },
-            { "id": 412, "nombre": "Ensalada César", "descripcion": "Lechuga, pollo grillado, parmesano y croutons", "precio": 7000, "imagen": "" },
-            { "id": 413, "nombre": "Sándwich de bondiola", "descripcion": "Con papas fritas", "precio": 8500, "imagen": "" }
-          ]
-        }
-      ]
+      "disponible": false,
+      "horarios": [],
+      "categorias": []
     },
     {
       "id": "cena",
       "nombre": "Cena",
-      "horarios": [{ "desde": "20:00", "hasta": "24:00" }],
-      "categorias": [
-        {
-          "id": "principales",
-          "nombre": "Principales",
-          "productos": [
-            { "id": 501, "nombre": "Bife de chorizo", "descripcion": "Con papas rústicas o ensalada", "precio": 14500, "imagen": "" },
-            { "id": 502, "nombre": "Ravioles caseros", "descripcion": "De ricota, con salsa a elección", "precio": 9800, "imagen": "" },
-            { "id": 503, "nombre": "Pizza muzzarella", "descripcion": "Grande, a la piedra", "precio": 9000, "imagen": "" }
-          ]
-        },
-        {
-          "id": "postres",
-          "nombre": "Postres",
-          "productos": [
-            { "id": 511, "nombre": "Flan casero", "descripcion": "Con dulce de leche y crema", "precio": 3800, "imagen": "" },
-            { "id": 512, "nombre": "Helado", "descripcion": "Dos bochas", "precio": 3500, "imagen": "" }
-          ]
-        }
-      ]
+      "disponible": false,
+      "horarios": [],
+      "categorias": []
     }
   ]
 }
