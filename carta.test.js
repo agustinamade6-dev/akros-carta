@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {
   formatPesos, imagenSegura, normalizarCarta, filtrarCarta, formatFecha, seccionDelMomento, textoHorario, minutosEnArgentina,
+  mostrarTituloCategoria,
 } from './carta.js';
 
 const NBSP = / /g;
@@ -161,4 +162,15 @@ test('carta-ejemplo.json: la carta real de AKROS (v2), sin Confitería y con Alm
   assert.deepEqual(carta.secciones[1].categorias.map((c) => c.nombre), ['Cafetería', 'Cositas', 'Bebidas frías', 'Sandwichitos']);
   // La confitería se vende en el mostrador (con stock y código de barras): no va en la carta.
   assert.equal(carta.secciones.some((s) => /confiter/i.test(s.nombre)), false);
+});
+
+test('mostrarTituloCategoria: como en la carta impresa, no repite títulos', () => {
+  const { secciones } = normalizarCarta(ejemplo());
+  const [desayunos, cafeteria] = secciones;
+  const visibles = (seccion) => seccion.categorias.filter((c) => mostrarTituloCategoria(seccion, c)).map((c) => c.nombre);
+  // "Combos" es la única categoría de Desayunos y Meriendas.
+  assert.deepEqual(visibles(desayunos), []);
+  // "Cafetería" se llama igual que su sección (sin importar el acento).
+  assert.deepEqual(visibles(cafeteria), ['Cositas', 'Bebidas frías', 'Sandwichitos']);
+  assert.equal(mostrarTituloCategoria({ nombre: 'Cafeteria', categorias: [{}, {}] }, { nombre: 'Cafetería' }), false);
 });

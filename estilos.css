@@ -1,13 +1,16 @@
-/* Paleta de AKROS Café, la misma del POS (src/app/globals.css): blanco con detalles en el azul del logo. */
+/* Como la carta impresa de AKROS: papel crema, títulos azules en mayúsculas espaciadas, texto marrón y dibujos a mano. */
 :root {
-  --fondo: #ffffff;
-  --fondo-2: #f4f6fa;
-  --azul: #02399e;
-  --azul-suave: rgba(2, 57, 158, 0.08);
-  --tinta: #0e1b2c;
-  --tinta-suave: #4f5b63;
-  --borde: #d6deea;
-  --puntos: #b6c3d6;
+  --papel: #fdfbf6;
+  --papel-2: #f5efe4;
+  --azul: #1d4fae;
+  --azul-suave: rgba(29, 79, 174, 0.08);
+  --marron: #7f4426;       /* textos: 7:1 sobre el papel */
+  --marron-titulo: #9c4f2a; /* "CAFETERÍA" de la cabecera */
+  --arena: #c9ad8f;        /* dibujos y líneas decorativas */
+  --tinta-suave: #6b5446;
+  --borde: #e6dccd;
+  --serif-titulos: "Arvo", Georgia, "Times New Roman", serif;
+  --serif-texto: "Zilla Slab", Georgia, "Times New Roman", serif;
   color-scheme: light;
 }
 
@@ -20,11 +23,12 @@ html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  background: var(--fondo);
-  color: var(--tinta);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  line-height: 1.4;
+  background: var(--papel);
+  color: var(--marron);
+  font-family: var(--serif-texto);
+  line-height: 1.45;
   -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
 }
 
 .oculto {
@@ -32,16 +36,58 @@ body {
   clip: rect(0 0 0 0); white-space: nowrap;
 }
 
-.encabezado { padding: 1.1rem 1rem 0.6rem; text-align: center; }
+/* Cabecera: taza dibujada, "CAFETERÍA" en marrón y "AKROS" grande en azul, con granos azules en las esquinas. */
+.encabezado {
+  position: relative;
+  text-align: center;
+  padding: 1.2rem 1rem 0.4rem;
+}
 
-.logo { width: min(250px, 68vw); height: auto; display: block; margin: 0 auto; }
+.taza { width: 132px; height: 88px; color: #6b4a32; display: block; margin: 0 auto 0.2rem; }
+
+.granos { position: absolute; top: 0.9rem; width: 62px; height: 58px; color: var(--azul); }
+.granos-izq { left: 0.6rem; transform: rotate(-12deg); }
+.granos-der { right: 0.6rem; transform: scaleX(-1) rotate(-12deg); }
+
+.titulo { margin: 0; font-family: var(--serif-titulos); font-weight: 700; line-height: 1.05; }
+.titulo-chico {
+  display: block;
+  font-size: 1.15rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--marron-titulo);
+}
+.titulo-grande { display: block; font-size: 3rem; letter-spacing: 0.12em; color: var(--azul); }
+
+/* Línea arena con un rombo en el medio, como en la carta impresa. */
+.separador {
+  position: relative;
+  width: min(220px, 60%);
+  height: 14px;
+  margin: 0.7rem auto 0;
+}
+.separador::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  border-top: 1.5px solid var(--arena);
+}
+.separador::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 10px; height: 10px;
+  background: var(--papel);
+  border: 1.5px solid var(--arena);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
 
 /* Buscador y secciones quedan fijos arriba al bajar. */
 .barra {
   position: sticky;
   top: 0;
-  z-index: 1;
-  background: var(--fondo);
+  z-index: 2;
+  background: var(--papel);
   border-bottom: 1px solid var(--borde);
   padding: 0.5rem 1rem 0;
 }
@@ -50,23 +96,22 @@ body {
   width: 100%;
   font: inherit;
   font-size: 1rem; /* 16px: iOS no hace zoom al tocar */
-  padding: 0.6rem 0.9rem;
+  padding: 0.55rem 0.9rem;
   border: 1px solid var(--borde);
   border-radius: 999px;
-  background: var(--fondo-2);
-  color: var(--tinta);
+  background: #fff;
+  color: var(--marron);
 }
-
-.buscador input:focus-visible { outline: 2px solid var(--azul); outline-offset: 1px; background: var(--fondo); }
+.buscador input::placeholder { color: var(--tinta-suave); }
+.buscador input:focus-visible { outline: 2px solid var(--azul); outline-offset: 1px; }
 
 .pestanias {
   display: flex;
-  gap: 1.25rem;
+  gap: 1.3rem;
   overflow-x: auto;
-  margin-top: 0.35rem;
+  margin-top: 0.3rem;
   scrollbar-width: none;
 }
-
 .pestanias::-webkit-scrollbar { display: none; }
 
 .pestania {
@@ -74,120 +119,123 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  font: inherit;
-  font-weight: 600;
-  font-size: 0.95rem;
+  font-family: var(--serif-titulos);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   color: var(--tinta-suave);
   background: none;
   border: 0;
   border-bottom: 3px solid transparent;
-  padding: 0.7rem 0 0.6rem;
+  padding: 0.75rem 0 0.6rem;
   min-height: 44px;
   cursor: pointer;
   white-space: nowrap;
 }
-
 .pestania[aria-selected="true"] { color: var(--azul); border-bottom-color: var(--azul); }
-
 .pestania:focus-visible { outline: 2px solid var(--azul); outline-offset: 2px; border-radius: 4px; }
 
-.ahora {
-  font-size: 0.68rem;
-  font-weight: 700;
-  text-transform: uppercase;
+.ahora, .pronto {
+  font-family: var(--serif-texto);
+  font-size: 0.66rem;
+  font-weight: 600;
   letter-spacing: 0.04em;
-  color: var(--azul);
-  background: var(--azul-suave);
   border-radius: 999px;
-  padding: 0.1rem 0.45rem;
+  padding: 0.05rem 0.45rem;
 }
+.ahora { color: var(--azul); background: var(--azul-suave); }
+.pronto { color: var(--tinta-suave); background: var(--papel-2); }
 
-/* Secciones que todavía no se sirven (Almuerzo, Cena): se pueden abrir, pero avisan "Próximamente". */
-.pestania.no-disponible { color: var(--tinta-suave); }
+main { position: relative; z-index: 1; max-width: 560px; margin: 0 auto; padding: 0 1.4rem; }
 
-.pronto {
-  font-size: 0.68rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--tinta-suave);
-  background: var(--fondo-2);
-  border-radius: 999px;
-  padding: 0.1rem 0.45rem;
-}
-
-.proximamente {
-  margin: 1.5rem 0 0;
-  padding: 1.5rem 1rem;
-  text-align: center;
-  color: var(--tinta-suave);
-  background: var(--fondo-2);
-  border-radius: 0.75rem;
-}
-
-main { max-width: 680px; margin: 0 auto; padding: 0 1.1rem; }
-
-.seccion { padding-top: 1.4rem; }
-
-.seccion + .seccion { border-top: 1px solid var(--borde); margin-top: 1.4rem; }
-
-.seccion-cabecera { margin-bottom: 0.4rem; }
+.seccion { padding-top: 1.6rem; }
+.seccion-cabecera { text-align: center; margin-bottom: 0.4rem; }
 
 .seccion-titulo {
   margin: 0;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.7rem;
+  font-family: var(--serif-titulos);
+  font-size: 1.35rem;
   font-weight: 700;
-  color: var(--azul);
-}
-
-.seccion-horario { margin: 0.15rem 0 0; color: var(--tinta-suave); font-size: 0.85rem; }
-
-.categoria { padding-top: 1.1rem; }
-
-.categoria-titulo {
-  margin: 0 0 0.35rem;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--azul);
 }
+.seccion-cabecera .separador { margin-top: 0.5rem; }
 
-/* Renglón de carta: "Cortado ........ $2.500" y la descripción debajo. */
-.item {
-  display: flex;
-  gap: 0.8rem;
-  align-items: flex-start;
-  padding: 0.7rem 0;
-  border-bottom: 1px solid var(--fondo-2);
+.seccion-horario { margin: 0.4rem 0 0; color: var(--tinta-suave); font-size: 0.9rem; }
+
+.categoria { padding-top: 1.3rem; }
+
+.categoria-titulo {
+  margin: 0 0 0.3rem;
+  font-family: var(--serif-titulos);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--azul);
+  text-align: center;
 }
 
-.item:last-child { border-bottom: 0; }
+/* Renglones. */
+.item { display: flex; gap: 0.8rem; align-items: flex-start; }
 
 .item-foto {
   flex: none;
-  width: 64px;
-  height: 64px;
-  border-radius: 0.6rem;
+  width: 60px;
+  height: 60px;
+  border-radius: 0.5rem;
   object-fit: cover;
-  background: var(--fondo-2);
+  background: var(--papel-2);
 }
 
 .item-cuerpo { flex: 1; min-width: 0; }
-
 .item-linea { display: flex; align-items: baseline; gap: 0.4rem; }
+.item-nombre { margin: 0; }
+.item-puntos { flex: 1; min-width: 1rem; border-bottom: 2px dotted var(--arena); transform: translateY(-0.25rem); }
+.item-precio {
+  margin: 0;
+  font-family: var(--serif-titulos);
+  font-weight: 700;
+  color: var(--azul);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
 
-.item-nombre { margin: 0; font-size: 1rem; font-weight: 600; }
+/* Combo (tiene descripción): nombre en azul, mayúsculas espaciadas; lo que incluye, en marrón debajo. */
+.item-combo { padding: 0.75rem 0; }
+.item-combo .item-nombre {
+  font-family: var(--serif-titulos);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--azul);
+}
+.item-descripcion { margin: 0.2rem 0 0; font-size: 1rem; font-weight: 500; color: var(--marron); }
 
-.item-puntos { flex: 1; min-width: 1rem; border-bottom: 2px dotted var(--puntos); transform: translateY(-0.25rem); }
+/* Renglón de lista (sin descripción): viñeta y letra de máquina espaciada, en marrón. */
+.item-lista { padding: 0.32rem 0; }
+.item-lista .item-nombre {
+  font-family: var(--serif-titulos);
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--marron);
+}
+.item-lista .item-nombre::before { content: "•"; margin-right: 0.55rem; color: var(--marron); }
 
-.item-precio { margin: 0; font-weight: 700; color: var(--tinta); white-space: nowrap; font-variant-numeric: tabular-nums; }
-
-.item-descripcion { margin: 0.15rem 0 0; color: var(--tinta-suave); font-size: 0.875rem; }
+.proximamente {
+  margin: 1.4rem 0 0;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  color: var(--tinta-suave);
+  background: var(--papel-2);
+  border-radius: 0.75rem;
+}
 
 .estado { text-align: center; padding: 2.5rem 0; }
-
 .aviso { color: var(--tinta-suave); text-align: center; padding: 1rem 0; margin: 0; }
 
 .boton {
@@ -201,11 +249,28 @@ main { max-width: 680px; margin: 0 auto; padding: 0 1.1rem; }
   cursor: pointer;
 }
 
+/* Pie: separador, fecha y granitos color arena desparramados. */
 .pie {
   text-align: center;
   color: var(--tinta-suave);
-  font-size: 0.8rem;
-  padding: 2rem 1rem calc(2rem + env(safe-area-inset-bottom));
+  font-size: 0.85rem;
+  padding: 2.2rem 1rem calc(1rem + env(safe-area-inset-bottom));
+}
+.pie p { margin: 0.8rem 0 0; }
+
+.granitos { display: flex; justify-content: center; gap: 0.9rem; margin-top: 1.2rem; color: var(--arena); }
+.granitos svg { width: 18px; height: 26px; transform: rotate(var(--r)); }
+.granitos svg:nth-child(odd) { margin-top: 0.6rem; }
+
+/* Cafetera y bolsa a los costados, como en la carta impresa: solo cuando hay lugar, para no tapar el texto. */
+.adornos { display: none; }
+
+@media (min-width: 900px) {
+  .adornos { display: block; position: fixed; inset: 0; pointer-events: none; color: var(--arena); z-index: 0; }
+  .adorno { position: absolute; }
+  .adorno-cafetera { left: max(1rem, calc(50% - 470px)); top: 45%; width: 120px; height: 194px; }
+  .adorno-bolsa { right: max(1rem, calc(50% - 470px)); top: 22%; width: 130px; height: 130px; }
+  .granos { width: 80px; height: 75px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -3,16 +3,98 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#fdfbf6">
   <meta name="description" content="Carta de AKROS Café">
   <title>Carta · AKROS Café</title>
   <link rel="icon" href="icono.png">
+  <!-- Letras de la carta impresa: serif "de máquina" para títulos y renglones, una más suave para lo que incluye cada combo.
+       Sin conexión a Google Fonts se usa Georgia y la carta se lee igual. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Arvo:wght@400;700&family=Zilla+Slab:wght@500;600&display=swap">
   <link rel="stylesheet" href="estilos.css">
   <script type="module" src="carta.js"></script>
 </head>
 <body>
+  <!-- Dibujos de la carta impresa, hechos a mano en SVG (decorativos). -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <!-- Dos granos de café azules, con el surco y un sombreado de trazos. -->
+      <symbol id="granos" viewBox="0 0 120 112">
+        <g stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none">
+          <path d="M33 6c17-3 29 12 28 33s-11 41-27 42S6 67 8 45 17 9 33 6z" fill="#eef3fc"/>
+          <path d="M36 9c-9 13 7 22-2 34s5 23-3 35"/>
+          <path d="M18 30c3 5 3 11 1 17M50 28c3 6 3 13 1 20M22 58c2 4 2 8 0 12" stroke-width="1.6"/>
+          <g transform="translate(58 40) rotate(38 26 34)">
+            <path d="M27 2c17-3 29 12 28 33s-11 41-27 42S0 63 2 41 11 5 27 2z" fill="#eef3fc"/>
+            <path d="M30 5c-9 13 7 22-2 34s5 23-3 35"/>
+            <path d="M12 26c3 5 3 11 1 17M44 24c3 6 3 13 1 20" stroke-width="1.6"/>
+          </g>
+        </g>
+      </symbol>
+      <!-- Taza con plato, espuma y una rama de canela, en trazo marrón. -->
+      <symbol id="taza" viewBox="0 0 170 112">
+        <g stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+          <ellipse cx="80" cy="92" rx="70" ry="13" fill="#fdfbf6"/>
+          <ellipse cx="80" cy="91" rx="44" ry="7"/>
+          <path d="M34 34c0 34 18 54 46 54s46-20 46-54" fill="#fdfbf6"/>
+          <ellipse cx="80" cy="34" rx="46" ry="11" fill="#fdfbf6"/>
+          <ellipse cx="80" cy="34" rx="38" ry="7"/>
+          <path d="M126 44c20-6 26 18 4 26"/>
+          <path d="M120 98l44-16M122 103l43-15M164 82l1 6" />
+          <path d="M44 52c6 16 16 26 30 30M52 50c4 10 10 18 18 22" stroke-width="1.4"/>
+          <path d="M66 32c4-5 10-6 15-4s9 5 13 2" stroke-width="1.6"/>
+        </g>
+        <g fill="currentColor">
+          <circle cx="62" cy="34" r="1.2"/><circle cx="70" cy="37" r="1.1"/><circle cx="78" cy="31" r="1.3"/>
+          <circle cx="88" cy="36" r="1.1"/><circle cx="96" cy="33" r="1.2"/><circle cx="74" cy="30" r="0.9"/>
+          <circle cx="84" cy="38" r="0.9"/><circle cx="100" cy="36" r="0.9"/><circle cx="58" cy="37" r="0.9"/>
+        </g>
+      </symbol>
+      <!-- Cafetera italiana, trazo arena. -->
+      <symbol id="cafetera" viewBox="0 0 130 210">
+        <g stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+          <path d="M52 14h26l-4 10H56z"/>
+          <path d="M40 24h50l10 72H30z"/>
+          <path d="M30 96h70v10H30z"/>
+          <path d="M34 106h62l12 88H22z"/>
+          <path d="M40 24l-22 14 4 6"/>
+          <path d="M100 40c22 0 22 46 6 50"/>
+          <path d="M46 34l-4 54M60 34v56M74 34l2 56M88 34l4 54" stroke-width="1.2"/>
+          <path d="M40 120l-6 66M58 118l-2 70M76 118l2 70M92 120l6 66" stroke-width="1.2"/>
+        </g>
+      </symbol>
+      <!-- Bolsa de café con granos, trazo arena. -->
+      <symbol id="bolsa" viewBox="0 0 150 150">
+        <g stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+          <path d="M28 40c-8 30-12 70-4 100h104c8-30 4-70-4-100"/>
+          <path d="M28 40c30-10 66-10 96 0"/>
+          <path d="M34 34c10-14 22-20 42-20s32 6 42 20"/>
+          <path d="M40 60c-3 20-4 46 0 68M112 60c3 20 4 46 0 68" stroke-width="1.2"/>
+          <ellipse cx="58" cy="26" rx="7" ry="5"/><path d="M53 26c4-1 7 1 10 0"/>
+          <ellipse cx="76" cy="20" rx="7" ry="5"/><path d="M71 20c4-1 7 1 10 0"/>
+          <ellipse cx="94" cy="27" rx="7" ry="5"/><path d="M89 27c4-1 7 1 10 0"/>
+        </g>
+      </symbol>
+      <!-- Granito suelto para el pie. -->
+      <symbol id="grano" viewBox="0 0 24 34">
+        <path d="M12 2c7 0 10 7 10 15s-4 15-10 15S2 25 2 17 5 2 12 2z" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M12 5c-4 6 3 10-1 15s3 7 0 10" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <div class="adornos" aria-hidden="true">
+    <svg class="adorno adorno-cafetera"><use href="#cafetera"/></svg>
+    <svg class="adorno adorno-bolsa"><use href="#bolsa"/></svg>
+  </div>
+
   <header class="encabezado">
-    <img class="logo" src="logo.png" alt="AKROS Café" width="864" height="274">
+    <svg class="granos granos-izq" aria-hidden="true"><use href="#granos"/></svg>
+    <svg class="granos granos-der" aria-hidden="true"><use href="#granos"/></svg>
+    <svg class="taza" aria-hidden="true"><use href="#taza"/></svg>
+    <h1 class="titulo"><span class="titulo-chico">Cafetería</span> <span class="titulo-grande">AKROS</span></h1>
+    <div class="separador" aria-hidden="true"></div>
   </header>
 
   <div class="barra">
@@ -31,7 +113,18 @@
   </main>
 
   <footer class="pie">
+    <div class="separador" aria-hidden="true"></div>
     <p id="actualizada"></p>
+    <div class="granitos" aria-hidden="true">
+      <svg style="--r:-20deg"><use href="#grano"/></svg>
+      <svg style="--r:15deg"><use href="#grano"/></svg>
+      <svg style="--r:-40deg"><use href="#grano"/></svg>
+      <svg style="--r:30deg"><use href="#grano"/></svg>
+      <svg style="--r:-10deg"><use href="#grano"/></svg>
+      <svg style="--r:45deg"><use href="#grano"/></svg>
+      <svg style="--r:-30deg"><use href="#grano"/></svg>
+      <svg style="--r:10deg"><use href="#grano"/></svg>
+    </div>
   </footer>
 </body>
 </html>

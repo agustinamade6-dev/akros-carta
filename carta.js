@@ -147,6 +147,15 @@ export function filtrarCarta(carta, busqueda) {
     .filter((seccion) => seccion.categorias.length > 0);
 }
 
+/**
+ * Si se muestra el título de la categoría. Como en la carta impresa, no se repite cuando es la única de la sección
+ * ("Combos" dentro de Desayunos y Meriendas) ni cuando se llama igual que la sección (Cafetería dentro de Cafetería).
+ */
+export function mostrarTituloCategoria(seccion, categoria) {
+  if (seccion.categorias.length <= 1) return false;
+  return sinAcentos(categoria.nombre) !== sinAcentos(seccion.nombre);
+}
+
 /** "25/10/2026, 15:30", en hora de Argentina. */
 export function formatFecha(fecha) {
   return new Intl.DateTimeFormat('es-AR', {
@@ -165,9 +174,12 @@ function crear(etiqueta, clase, contenido) {
   return elemento;
 }
 
-/** Renglón de carta: nombre y precio en la misma línea, descripción debajo y, si hay, una foto chica. */
+/**
+ * Renglón de carta, como en la impresa: con descripción (los combos) va el nombre destacado y lo que incluye debajo;
+ * sin descripción, un renglón de lista con viñeta. El precio, si lo hay, a la derecha. Foto chica opcional.
+ */
 function renglonProducto(producto) {
-  const renglon = crear('article', producto.imagen ? 'item con-foto' : 'item');
+  const renglon = crear('article', `item ${producto.descripcion ? 'item-combo' : 'item-lista'}${producto.imagen ? ' con-foto' : ''}`);
   if (producto.imagen) {
     const img = document.createElement('img');
     img.className = 'item-foto';
@@ -196,7 +208,7 @@ function bloqueSeccion(seccion, { conTitulo }) {
   bloque.setAttribute('aria-label', seccion.nombre);
   if (conTitulo) {
     const cabecera = crear('header', 'seccion-cabecera');
-    cabecera.append(crear('h2', 'seccion-titulo', seccion.nombre));
+    cabecera.append(crear('h2', 'seccion-titulo', seccion.nombre), crear('div', 'separador'));
     const horario = textoHorario(seccion.horarios);
     if (horario) cabecera.append(crear('p', 'seccion-horario', horario));
     bloque.append(cabecera);
@@ -207,7 +219,7 @@ function bloqueSeccion(seccion, { conTitulo }) {
   }
   for (const categoria of seccion.categorias) {
     const grupo = crear('div', 'categoria');
-    grupo.append(crear('h3', 'categoria-titulo', categoria.nombre));
+    if (mostrarTituloCategoria(seccion, categoria)) grupo.append(crear('h3', 'categoria-titulo', categoria.nombre));
     const lista = crear('div', 'items');
     lista.append(...categoria.productos.map(renglonProducto));
     grupo.append(lista);
