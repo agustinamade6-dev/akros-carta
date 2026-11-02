@@ -1,3 +1,3 @@
-// De dónde se lee la carta. Mientras no esté conectado Supabase, se usa la de ejemplo.
-// Después: la URL pública de carta.json en el Storage de Supabase.
-export const URL_CARTA = './carta-ejemplo.json';
+// De dónde se lee la carta: la que publica el programa del local (Admin → Carta del QR → Publicar) en el Storage de
+// Supabase. Para desarrollar sin internet, cambiar a './carta-ejemplo.json'.
+export const URL_CARTA = 'https://wkhgfdufvebeoombwlra.supabase.co/storage/v1/object/public/carta/carta.json';
